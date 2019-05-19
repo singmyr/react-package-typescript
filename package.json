@@ -4,6 +4,8 @@
     "description": "React Package Template in Typescript",
     "main": "dist/index.js",
     "scripts": {
+        "lint": "eslint src/** --ext .ts,.tsx,.js,.jsx",
+        "lint:fix": "yarn lint --fix",
         "test": "jest --verbose",
         "test:watch": "jest --watchAll --verbose",
         "test:coverage": "jest --verbose --coverage",
@@ -26,7 +28,9 @@
         "eslint-config-prettier": "^4.3.0",
         "eslint-plugin-prettier": "^3.1.0",
         "eslint-plugin-react": "^7.13.0",
+        "husky": ">=1",
         "jest": "^24.8.0",
+        "lint-staged": ">=8",
         "prettier": "^1.17.1",
         "react": "^16.8.6",
         "react-dom": "^16.8.6",
@@ -40,13 +44,28 @@
         "moduleFileExtensions": [
             "ts",
             "tsx",
-            "js"
+            "js",
+            "jsx"
         ],
         "transform": {
             "^.+\\.(ts|tsx)$": "<rootDir>/test-preprocessor.js"
         },
         "testMatch": [
-            "**/__tests__/*.(ts|tsx|js)"
+            "**/__tests__/*.(ts|tsx|js|jsx)"
         ]
-    }
+    },
+    "husky": {
+        "hooks": {
+            "pre-commit": "jest && lint-staged"
+        }
+    },
+    "lint-staged": {
+        "*.{js,jsx,ts,tsx}": [
+            "eslint --fix",
+            "git add"
+        ]
+    },
+    "ignore": [
+        "dist/**.js"
+    ]
 }
